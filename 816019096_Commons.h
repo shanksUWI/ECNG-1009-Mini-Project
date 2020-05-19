@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <cmath>
 #include <stdlib.h>
+#include <chrono>
 
 using std::cout;
 using std::cin;

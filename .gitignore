@@ -1,6 +1,7 @@
 .vs/
 Debug/
 testData/
+Release/
 MainMenu.cpp
 MainMenu.h
 NYSE_Analyzer.sln

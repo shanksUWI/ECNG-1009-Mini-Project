@@ -8,26 +8,6 @@
 #include "816019096_Timer.h"
 
 
-/*
-Author	:	Shankar Ramharack
-ID		:	816019096
-COURSE	:	ECNG 1009
-DEGREE	:	BSc. Electrical and Computer Engineering 
-
-
-Last Modified: 5/19/2020
-To do:
-
-1)Clean up the UI and make sure the menu system is working properly and find a better alternative to cin.ignore for the user to continue execution
-2)Create a loading display for the reading of the files and consider a less verbose way to show the companies being read in
-3)Clean up code by removing old depandancies, comments and unused functions
-
-
-*/
-
-
-
-
 
 
 
@@ -132,7 +112,9 @@ int main_menu(vector<Security>& main_sec_db,map<string, map<string, vector<daySe
 					cout << "\nEnd:";
 					getline(cin, d2);
 					cout << "\nThe total traded volume from " << d1 << " to " << d2 << " is " << req.req_sec.get_period_total(d1, d2, '/');
-					cout << "\nPress enter to continue."; cin.ignore();
+					cout << "\nPress enter to continue.";
+					std::cin.clear();
+					std::cin.ignore(32767, '\n');
 					return 0;
 				}break;
 				case 2: {
@@ -145,7 +127,9 @@ int main_menu(vector<Security>& main_sec_db,map<string, map<string, vector<daySe
 					cout << "\nYear:";
 					getline(cin, year);
 					cout << "\nThe total volume traded for the month " << month << " in " << year << " is " << req.req_sec.get_monthly_volume(month, year);
-					cout << "\nPress enter to continue."; cin.ignore();
+					cout << "\nPress enter to continue.";
+					std::cin.clear();
+					std::cin.ignore(32767, '\n');
 					return 0;
 				}break;
 				case 3: {
@@ -155,23 +139,33 @@ int main_menu(vector<Security>& main_sec_db,map<string, map<string, vector<daySe
 					cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 					getline(cin, year);
 					cout << "\nTotal volume traded for " << year << " " << req.req_sec.get_annual_volume(year);
-					cout << "\nPress enter to continue."; cin.ignore();
+					cout << "\nPress enter to continue."; 
+					std::cin.clear();
+					std::cin.ignore(32767, '\n');
 					return 0;
 				}break;
 				case 4: {
+					cout << "[!]If no entries exist, nan(ind) is printed instead" << endl;
 					req.req_sec.print_statistical_parameters();
-					cin.ignore();
+					cout << "\nPress enter to continue.";
+					std::cin.clear();
+					std::cin.ignore(32767, '\n');
 					return 0;
 				}break;
 				case 5: {
 					for (auto& yr : req.req_sec.m_timeline) {
 						req.req_sec.plot_monthly_histogram(yr.first);
 					}
+					std::cin.clear();
+					cout << "\nPress enter to continue.";
+					std::cin.ignore(32767, '\n');
+					return 0;
 				}break;
 				case 6: {return 0; }break;
 				default: {
 					cerr << "\n[!]Invalid selection\nPress enter to continue.";
-					cin.ignore();
+					std::cin.clear();
+					std::cin.ignore(32767, '\n');
 					return 0;
 				}break;
 				}
@@ -196,7 +190,8 @@ int main_menu(vector<Security>& main_sec_db,map<string, map<string, vector<daySe
 			}
 			if (!found_yr) {
 				cout << "\n[!]Invalid year entered.\nPress enter to continue." << endl;
-				cin.ignore();
+				std::cin.clear();
+				std::cin.ignore(32767, '\n');
 				return 0;
 			}
 
@@ -209,16 +204,19 @@ int main_menu(vector<Security>& main_sec_db,map<string, map<string, vector<daySe
 			case 1: {
 				plot_annual_histogram(gics_list, year);
 				cout << "\nPress enter to continue.";
-				cin.ignore();
+				std::cin.clear();
+				std::cin.ignore(32767, '\n');
 				return 0;
 			}; break;
 			case 2: {plot_annual_comparison_histogram(gics_list, year);
 				cout << "\nPress enter to continue."; 
-				cin.ignore();
+				std::cin.clear();
+				std::cin.ignore(32767, '\n');
 				return 0;
 			}; break;
 			default: {cout << "\n[!]Invalid selection.\nPress enter to continue." << endl;
-				cin.ignore();
+				std::cin.clear();
+				std::cin.ignore(32767, '\n');
 				return 0;
 			}; break;
 			}
@@ -230,7 +228,9 @@ int main_menu(vector<Security>& main_sec_db,map<string, map<string, vector<daySe
 				plot_annual_comparison_histogram(gics_list, yr.first);
 				cout << "--------------------------------" << endl;
 			}
-			cin.ignore();
+			cout << "\nPress enter to continue.";
+			std::cin.clear();
+			std::cin.ignore(32767, '\n');
 
 		}break;
 		case 4: {
@@ -238,7 +238,8 @@ int main_menu(vector<Security>& main_sec_db,map<string, map<string, vector<daySe
 		}break;
 		default: {
 			cout << "\n[!]Invalid selection.\nPress enter to continue." << endl;
-			cin.ignore();
+			std::cin.clear();
+			std::cin.ignore(32767, '\n');
 			return 0;
 		}break;
 	}
@@ -269,18 +270,9 @@ int main() {
 
 
 
-	//SMALL DATA TESTING BOTH WORK JUST FINE
-	string sec_file_name = "testData/securities.csv";
-	//string psa_file_name = "testData/testPSA_B.csv";
 
-	//MEDIUM DATA TESTING
-	//string sec_file_name = "testData/TESTSECURITIES.csv";
-	//string psa_file_name = "testData/testPSA_B.csv";
-	string psa_file_name = "testData/prices-split-adjusted.csv";
-
-	//REAL DATA TESTING
-	//string sec_file_name = "testData/securities.csv";
-	//string psa_file_name = "testData/prices-split-adjusted.csv";
+	string sec_file_name = "securities.csv";
+	string psa_file_name = "prices-split-adjusted.csv";
 
 	char exit_ch;
 	int gc = 1;
@@ -340,7 +332,8 @@ int main() {
 		cerr << "[!]Invalid argument entered, please ensure you enter numbers where"
 			<< " required and not letters as this will be considered invalid input"
 			<< "\nPress enter to continue" << endl;
-		exit_ch = getchar();
+		std::cin.clear();
+		std::cin.ignore(32767, '\n');
 		int run_state = 0;
 		while (run_state == 0)
 		{
