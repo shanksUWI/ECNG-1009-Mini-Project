@@ -1,0 +1,9 @@
+.vs/
+Debug/
+testData/
+MainMenu.cpp
+MainMenu.h
+NYSE_Analyzer.sln
+NYSE_Analyzer.vcxproj
+NYSE_Analyzer.vcxproj.filters
+NYSE_Analyzer.vcxproj.user
