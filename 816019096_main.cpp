@@ -24,6 +24,7 @@ struct indiv_gics_request {
 
 
 sec_request get_security_record(string u_tsymb, map<string, map<string, vector<daySec>>>* psa_timeline, vector<security>* security_list) {
+	//creating a structure for Security objects that encapsulates if they exist in the securities.csv file
 	sec_request req;
 	std::cout.setstate(std::ios_base::failbit);
 	bool found = false;
@@ -100,75 +101,81 @@ int main_menu(vector<Security>& main_sec_db,map<string, map<string, vector<daySe
 				cout << "[!]Dates are intepreted as MM/DD/YYYY\nEg. The 1st of February 2010 would be entered as 2/1/2010\n" << endl;
 				cout << ">";
 				cin >> option_tmp;
-				switch (option_tmp) {
-				case 1: {
-					cout << "[!]Both the start and end dates must be an existing entry in the dataset, if they are not,\n"
-						<< "please use dates close to valid entries by looking at the period in the dataset" << endl;
-					string d1, d2;
-					cout << "\nPlease enter the dates\n"
-						<< "Start:";
-					cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-					getline(cin, d1);
-					cout << "\nEnd:";
-					getline(cin, d2);
-					cout << "\nThe total traded volume from " << d1 << " to " << d2 << " is " << req.req_sec.get_period_total(d1, d2, '/');
-					cout << "\nPress enter to continue.";
-					std::cin.clear();
-					std::cin.ignore(32767, '\n');
-					return 0;
-				}break;
-				case 2: {
-					string month, year;
-					cout << "\nPlease enter the month and year\n"
-						<< "Month:";
-					cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-					getline(cin, month);
+				try {
+					switch (option_tmp) {
+					case 1: {
+						cout << "[!]Both the start and end dates must be an existing entry in the dataset, if they are not,\n"
+							<< "please use dates close to valid entries by looking at the period in the dataset" << endl;
+						string d1, d2;
+						cout << "\nPlease enter the dates\n"
+							<< "Start:";
+						cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+						getline(cin, d1);
+						cout << "\nEnd:";
+						getline(cin, d2);
+						cout << "\nThe total traded volume from " << d1 << " to " << d2 << " is " << req.req_sec.get_period_total(d1, d2, '/');
+						cout << "\nPress enter to continue.";
+						std::cin.clear();
+						std::cin.ignore(32767, '\n');
+						return 0;
+					}break;
+					case 2: {
+						string month, year;
+						cout << "\nPlease enter the month and year\n"
+							<< "Month:";
+						cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+						getline(cin, month);
 
-					cout << "\nYear:";
-					getline(cin, year);
-					cout << "\nThe total volume traded for the month " << month << " in " << year << " is " << req.req_sec.get_monthly_volume(month, year);
-					cout << "\nPress enter to continue.";
-					std::cin.clear();
-					std::cin.ignore(32767, '\n');
-					return 0;
-				}break;
-				case 3: {
-					string year;
-					cout << "\nPlease enter the year\n"
-						<< "Year:";
-					cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-					getline(cin, year);
-					cout << "\nTotal volume traded for " << year << " " << req.req_sec.get_annual_volume(year);
-					cout << "\nPress enter to continue."; 
-					std::cin.clear();
-					std::cin.ignore(32767, '\n');
-					return 0;
-				}break;
-				case 4: {
-					cout << "[!]If no entries exist, nan(ind) is printed instead" << endl;
-					req.req_sec.print_statistical_parameters();
-					cout << "\nPress enter to continue.";
-					std::cin.clear();
-					std::cin.ignore(32767, '\n');
-					return 0;
-				}break;
-				case 5: {
-					for (auto& yr : req.req_sec.m_timeline) {
-						req.req_sec.plot_monthly_histogram(yr.first);
+						cout << "\nYear:";
+						getline(cin, year);
+						cout << "\nThe total volume traded for the month " << month << " in " << year << " is " << req.req_sec.get_monthly_volume(month, year);
+						cout << "\nPress enter to continue.";
+						std::cin.clear();
+						std::cin.ignore(32767, '\n');
+						return 0;
+					}break;
+					case 3: {
+						string year;
+						cout << "\nPlease enter the year\n"
+							<< "Year:";
+						cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+						getline(cin, year);
+						cout << "\nTotal volume traded for " << year << " " << req.req_sec.get_annual_volume(year);
+						cout << "\nPress enter to continue.";
+						std::cin.clear();
+						std::cin.ignore(32767, '\n');
+						return 0;
+					}break;
+					case 4: {
+						cout << "[!]If no entries exist, nan(ind) is printed instead" << endl;
+						req.req_sec.print_statistical_parameters();
+						cout << "\nPress enter to continue.";
+						std::cin.clear();
+						std::cin.ignore(32767, '\n');
+						return 0;
+					}break;
+					case 5: {
+						for (auto& yr : req.req_sec.m_timeline) {
+							req.req_sec.plot_monthly_histogram(yr.first);
+						}
+						std::cin.clear();
+						cout << "\nPress enter to continue.";
+						std::cin.ignore(32767, '\n');
+						return 0;
+					}break;
+					case 6: {return 0; }break;
+					default: {
+						cerr << "\n[!]Invalid selection\nPress enter to continue.";
+						std::cin.clear();
+						std::cin.ignore(32767, '\n');
+						return 0;
+					}break;
 					}
-					std::cin.clear();
-					cout << "\nPress enter to continue.";
-					std::cin.ignore(32767, '\n');
-					return 0;
-				}break;
-				case 6: {return 0; }break;
-				default: {
-					cerr << "\n[!]Invalid selection\nPress enter to continue.";
-					std::cin.clear();
-					std::cin.ignore(32767, '\n');
-					return 0;
-				}break;
 				}
+				catch(std::exception& e){
+					throw e;
+				}
+				
 			}
 		}break;
 		case 2: {
@@ -313,10 +320,10 @@ int main() {
 	}
 	catch (std::runtime_error e) {
 		cerr << e.what() << endl;
-		cerr << "Unable to recover\nExiting...." << endl;
+		cerr << "\nUnable to recover\nExiting...." << endl;
 	}
 	catch (std::domain_error e) {
-		cerr << e.what() << endl;
+		cerr << "\n"<<e.what() << endl;
 		cout << "Press enter to continue." << endl;
 		cin.ignore();
 
@@ -329,7 +336,7 @@ int main() {
 		
 	}
 	catch (std::invalid_argument e) {
-		cerr << "[!]Invalid argument entered, please ensure you enter numbers where"
+		cerr << "\n[!]Invalid argument entered, please ensure you enter numbers where"
 			<< " required and not letters as this will be considered invalid input"
 			<< "\nPress enter to continue" << endl;
 		std::cin.clear();
@@ -343,7 +350,7 @@ int main() {
 
 	}
 	catch (std::exception & e) {
-		cerr << e.what() << endl;
+		cerr << "\n"<<e.what() << endl;
 		cout << "Press enter to continue." << endl;
 		cin.ignore();
 

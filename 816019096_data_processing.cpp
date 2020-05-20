@@ -9,6 +9,7 @@ void str_strip(string& str, char token) {
 	str.erase(remove(str.begin(), str.end(), token), str.end());
 }
 
+//This is a function used for reading any csv file into a vector of string vectors with the option of headings or no headings specified by rtype
 void read_csv(string filename, vector<vector<string>>& data, string rtype) {
 	std::ifstream file;
 	std::string str;
@@ -66,11 +67,11 @@ date break_date(string str_date, char delim) {
 
 
 
-
+//function for adding data entries to unique dates or updating a date with an entry if another occurance of the same date is found in the prices file
 static void addDay(std::map<string, day>* PSA, string date, daySec *sec) {
 	
 	
-	//ORIGINAL
+	
 	if (PSA->find(date) == PSA->end()) {
 		day* tmp = new day;
 		tmp->secTraded.push_back(*sec);
@@ -125,6 +126,7 @@ void printPSA(const std::map<string, day>& PSA) {
 	}
 }
 
+//constucts an entry givnen the vector string from the read_csv function on the prices file
 daySec get_day_entry(const vector<string>& data) {
 	daySec res;
 	res.gicsInd = "NaN";
@@ -136,7 +138,7 @@ daySec get_day_entry(const vector<string>& data) {
 }
 
 
-
+//constructs a timeline of all trades
 void getDays(string filename, std::map<string, day>& PSA) {
 	Timer timer;
 	vector<vector<string>> psavec;
@@ -147,6 +149,7 @@ void getDays(string filename, std::map<string, day>& PSA) {
 	}
 }
 
+//constructs unique GICS structures
 void getSecInfoGICS(vector<vector<string>>& securities, vector<GICS_Sec>& gicsSecs, vector<security>& secList) {
 	int x = 0; int y = 0;
 
@@ -179,6 +182,7 @@ void getSecInfoGICS(vector<vector<string>>& securities, vector<GICS_Sec>& gicsSe
 	}
 }
 
+//determines the volume within a period
 unsigned long long int get_volume(string periodStart, string periodEnd, string tsymb, std::map<string, day>& PSA) {
 	unsigned long long int tot_vol = 0;
 
@@ -208,7 +212,7 @@ void getTimeline(vector<Year>& years, std::map<string, day>& PSA) {
 	string month, year;
 	int yrFound; int mthFound;
 	for (auto i : PSA) {
-		month = break_date(i.first, '/').month;
+		month = break_date(i.first, '/').month; //breaking up the date so it can be used more easily
 		year = break_date(i.first, '/').year;
 
 		yrFound = 0; mthFound = 0;
@@ -255,6 +259,7 @@ void getTimeline(vector<Year>& years, std::map<string, day>& PSA) {
 	}
 }
 
+//determines the std deviation of a population of ints stored in a vector
 long double get_std_dev(vector<unsigned long long int>& population) {
 	
 

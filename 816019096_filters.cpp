@@ -4,6 +4,7 @@
 #include "816019096_data_processing.h"
 #include "816019096_Timer.h"
 
+//creates a unique timeline with each years and months trade stored sequentially
 void create_PSA_timeline(const map<string, day>& PSA_map, map <string, map<string, vector<daySec>>> &res) {
 	Timer timer ;
 	for (auto &record : PSA_map) {
@@ -50,6 +51,7 @@ void create_PSA_timeline(const map<string, day>& PSA_map, map <string, map<strin
 	
 }
 
+//creates timelines for individual Security objects
 map<string, map<string, vector<daySec>>> create_company_timeline(map <string, map<string, vector<daySec>>>* PSA_timeline, string* tsymb) {
 	map<string, map<string, vector<daySec>>> res;
 	for (auto& year : *PSA_timeline) {

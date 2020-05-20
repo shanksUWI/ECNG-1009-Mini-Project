@@ -11,7 +11,7 @@ Security::Security(map<string, map<string, vector<daySec>>>& PSA_timeline, const
 
 
 
-	//constructing pop
+	//constructing population
 	vector<unsigned long long int> month_totals;
 	
 	for (auto& year : m_timeline) {
@@ -109,11 +109,12 @@ Security::Security(map<string, map<string, vector<daySec>>>& PSA_timeline, const
 	}
 }
 
+
 Security::Security() {
 	cout << "[+]Empty Security Object created" << endl;
 }
 
-
+//a function allowing for late intilization(this was because i was playing around with multithreading and was tryna speed up creation)
 void Security::late_init(map<string, map<string, vector<daySec>>>* PSA_timeline, string* tsymb, string* gics) {
 	m_timeline = create_company_timeline(PSA_timeline, tsymb);
 	m_tsymb = *tsymb;
@@ -215,6 +216,7 @@ unsigned long long int Security::get_period_total(const string &pStart, const st
 
 	if ((pStart_found == true) && (pEnd_found == true)) {
 
+		//iterators for period year and month limits
 		map<string, map<string, vector<daySec>>>::iterator pStart_itr = m_timeline.find(periodStart.year);
 		map<string, vector<daySec>>::iterator pStart_subitr = pStart_itr->second.find(periodStart.month);
 		map<string, map<string, vector<daySec>>>::iterator pEnd_itr = m_timeline.find(periodEnd.year);

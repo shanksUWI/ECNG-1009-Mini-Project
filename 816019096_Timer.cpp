@@ -2,6 +2,8 @@
 #include "816019096_Commons.h"
 	
 
+//Timer object was used for benchmarking purposes and can be reused for later development
+
 Timer::Timer() {
 	m_StartTimePoint = std::chrono::high_resolution_clock::now();
 }

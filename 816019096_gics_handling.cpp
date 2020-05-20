@@ -66,6 +66,7 @@ void plot_annual_histogram(const vector<GICS_Sec>& gics_list, string year) {
 	unsigned long long int tmp = 0;
 	map<string, unsigned long long int> annual_performance;
 
+	//finidng totals 
 	for (auto& sector : gics_list) {
 		for (auto& yr : sector.totals) {
 			if (yr.first == year) {
@@ -89,6 +90,7 @@ void plot_annual_histogram(const vector<GICS_Sec>& gics_list, string year) {
 
 	//annual plot
 
+	//determining a scale for the plot 
 	unsigned long long int scale = 0;
 	for (auto& sec : annual_performance) {
 		if (sec.second > scale) {
